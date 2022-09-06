@@ -11,7 +11,7 @@ import CreatePost from './pages/CreatePost';
 
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
 
   const signUserOut = () => {
     signOut(auth).then( () => {
@@ -25,12 +25,12 @@ function App() {
     <Router>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/createpost">Create</Link>  
+        {isAuth ? <Link to="/createpost">Create</Link> : null}
         {isAuth ? <button onClick={signUserOut}>Log Out</button> : <Link to="/login">Login</Link>}
       </nav>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/createpost" element={<CreatePost />}/>
+        <Route path="/" element={<Home isAuth={isAuth}/>} />
+        <Route path="/createpost" element={<CreatePost isAuth={isAuth}/>}/>
         <Route path="/login" element={<Login setIsAuth={setIsAuth}/>} />
       </Routes>
     </Router>
